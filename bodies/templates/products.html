@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Каталог{% endblock %}
+{% block content %}
+<h1>Каталог товаров</h1>
+
+{% if show_add_product %}
+    <p style="margin-bottom:15px"><a href="{% url 'add_product' %}" class="btn">Добавить товар</a></p>
+{% endif %}
+
+{% if user.is_authenticated %}
+<div class="card">
+    <form method="get" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <input type="text" name="search" placeholder="Поиск..." value="{{ request.GET.search }}" style="width:auto; flex:1;">
+        <input type="number" name="price_min" placeholder="Цена от" value="{{ request.GET.price_min }}" style="width:120px;">
+        <input type="number" name="price_max" placeholder="Цена до" value="{{ request.GET.price_max }}" style="width:120px;">
+        <button class="btn" type="submit">Найти</button>
+        <a href="{% url 'product_list' %}" class="btn" style="background:#6c757d;">Сброс</a>
+    </form>
+</div>
+{% endif %}
+
+{% if products %}
+<div class="grid">
+    {% for product in products %}
+    <div class="card">
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:100%; height:180px; object-fit:cover; border-radius:3px; margin-bottom:10px;">
+        {% endif %}
+        <h3>{{ product.name }}</h3>
+        <p style="color:#666; font-size:13px;">{{ product.sku }}</p>
+        <p>{{ product.description|truncatewords:15 }}</p>
+        <p style="font-size:20px; font-weight:bold; color:#28a745; margin:10px 0;">{{ product.price }} р.</p>
+        <div style="display:flex; gap:5px; flex-wrap:wrap;">
+            {% if user.is_authenticated and user.profile.is_authorized %}
+                <a href="{% url 'create_order' product.id 1 %}" class="btn">Заказать</a>
+            {% endif %}
+            {% if show_edit %}
+                <a href="{% url 'edit_product' product.id %}" class="btn btn-success">Редактировать</a>
+            {% endif %}
+            {% if show_delete %}
+                <a href="{% url 'delete_product' product.id %}" class="btn btn-danger">Удалить</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>Товары не найдены.</p>
+{% endif %}
+{% endblock %}

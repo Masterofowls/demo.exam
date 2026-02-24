@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Заказы{% endblock %}
+{% block content %}
+<h1>Мои заказы</h1>
+{% if orders %}
+<table>
+    <tr><th>№</th><th>Товары</th><th>Дата</th><th>Статус</th><th>Пункт выдачи</th><th>Код</th></tr>
+    {% for order in orders %}
+    <tr>
+        <td>#{{ order.id }}</td>
+        <td>{{ order.get_skus }}</td>
+        <td>{{ order.createdAt|date:"d.m.Y H:i" }}</td>
+        <td>{{ order.get_status_display }}</td>
+        <td>{{ order.pickupPoint.address }}</td>
+        <td><strong>{{ order.receiveCode }}</strong></td>
+    </tr>
+    {% endfor %}
+</table>
+{% else %}
+<p>Заказов нет. <a href="{% url 'product_list' %}">Перейти в каталог</a></p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Добавить товар{% endblock %}
+{% block content %}
+<div class="card" style="max-width:500px; margin:20px auto;">
+    <h1>Добавить товар</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label>Название:</label>
+        <input type="text" name="name" required>
+        <label>Артикул:</label>
+        <input type="text" name="sku" required>
+        <label>Цена:</label>
+        <input type="number" name="price" step="0.01" required>
+        <label>Описание:</label>
+        <textarea name="description"></textarea>
+        <div style="display:flex; gap:10px; margin-top:20px;">
+            <button class="btn" type="submit">Добавить</button>
+            <a href="{% url 'product_list' %}" class="btn" style="background:#6c757d;">Отмена</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

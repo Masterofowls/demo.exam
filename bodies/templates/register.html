@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Регистрация{% endblock %}
+{% block content %}
+<div class="card" style="max-width:400px; margin:40px auto;">
+    <h1>Регистрация</h1>
+    {% if form.non_field_errors %}
+        {% for e in form.non_field_errors %}<p class="error">{{ e }}</p>{% endfor %}
+    {% endif %}
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            <label>{{ field.label }}</label>
+            {{ field }}
+            {% for e in field.errors %}<p class="error">{{ e }}</p>{% endfor %}
+        {% endfor %}
+        <br><button class="btn" type="submit" style="margin-top:15px;">Зарегистрироваться</button>
+    </form>
+    <p style="margin-top:15px;">Есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+</div>
+{% endblock %}

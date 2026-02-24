@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block title %}Удаление{% endblock %}
+{% block content %}
+<div class="card" style="max-width:400px; margin:40px auto; text-align:center;">
+    <h1>Удалить {{ object_type }}?</h1>
+    <p style="margin:15px 0;"><strong>{{ object }}</strong></p>
+    <form method="post" style="display:flex; gap:10px; justify-content:center;">
+        {% csrf_token %}
+        <button class="btn btn-danger" type="submit">Удалить</button>
+        <a href="{% url 'product_list' %}" class="btn" style="background:#6c757d;">Отмена</a>
+    </form>
+</div>
+{% endblock %}

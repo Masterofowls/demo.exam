@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Магазин{% endblock %}</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        a { color: #007bff; }
+        nav { margin-bottom: 20px; }
+        nav a, nav span { margin-right: 15px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 8px; text-align: left; border: 1px solid #ddd; }
+        .btn { padding: 6px 12px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; text-decoration: none; }
+        input, select, textarea { padding: 6px; border: 1px solid #ddd; width: 100%; }
+        label { display: block; margin: 8px 0 2px; font-weight: bold; }
+        .card { border: 1px solid #ddd; padding: 15px; margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+<nav>
+    <a href="{% url 'product_list' %}">Каталог</a>
+    {% if user.is_authenticated %}
+        <span>{{ user.username }} ({{ user.profile.get_role_display }})</span>
+        <a href="{% url 'order_list' %}">Заказы</a>
+        {% if user.profile.role == 'admin' %}
+            <a href="{% url 'manage_users' %}">Пользователи</a>
+        {% endif %}
+        <a href="{% url 'logout' %}">Выход</a>
+    {% else %}
+        <a href="{% url 'login' %}">Вход</a>
+        <a href="{% url 'register' %}">Регистрация</a>
+    {% endif %}
+</nav>
+{% block content %}{% endblock %}
+</body>
+</html>
