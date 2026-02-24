@@ -164,7 +164,6 @@ def add_product(request):
     
     return render(request, 'add_product.html')
 
-# NEW: Admin user management
 @login_required(login_url='login')
 @require_role(['admin'])
 def manage_users(request):

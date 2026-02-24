@@ -16,7 +16,6 @@ class Command(BaseCommand):
         parser.add_argument('csv_file', nargs='?', type=str)
 
     def handle(self, *args, **options):
-        # Auto-find all CSV files
         import_path = r"D:\django.demo\Прил_ОЗ_КОД 09.02.07-2-2026\БУ\Модуль 1\import"
         csv_files = glob.glob(os.path.join(import_path, "*.csv"))
         
@@ -36,7 +35,6 @@ class Command(BaseCommand):
                     reader = csv.DictReader(f)
                     for row in reader:
                         try:
-                            # Smart field matching
                             sku = (row.get('код') or row.get('артикул') or 
                                   row.get('sku') or row.get('Код') or 
                                   str(hash(str(row)))[:50])[:50]
@@ -45,7 +43,6 @@ class Command(BaseCommand):
                                    row.get('Наименование') or 
                                    list(row.values())[0] or 'Unnamed')[:100]
                             
-                            # Find any numeric value for price
                             price_str = next((v for v in row.values() 
                                             if re.search(r'\d', str(v))), '0')
                             price = Decimal(str(price_str).replace(',', '.').replace(' ', '') or '0')
